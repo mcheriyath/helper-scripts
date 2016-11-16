@@ -12,7 +12,7 @@ vagrant up
 Run ansible for updating the recently launched host with the SSH keys from remote github account
 ````
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts ansiblessh.yml --private-key=~/.vagrant/insecure_private_key --tags "fromjson"
+ansible-playbook -i hosts ansiblessh.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "fromjson"
 ````
 
 ## Ansible SSH deploy - From pub key file
@@ -20,7 +20,7 @@ ansible-playbook -i hosts ansiblessh.yml --private-key=~/.vagrant/insecure_priva
 Run ansible for updating the recently launched host with the SSH keys from remote github account
 ````
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts ansiblessh.yml --private-key=~/.vagrant/insecure_private_key --tags "frompubkey"
+ansible-playbook -i hosts ansiblessh.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "frompubkey"
 ````
 
 ## Troubleshooting
