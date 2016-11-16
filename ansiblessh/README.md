@@ -1,4 +1,4 @@
-# Sample Ansible which deploys SSH Pub keys from a file on github or parsed from Json from github
+# Ansible which deploys SSH Pub keys onto remote host(s) from a file or parsed from Json
 
 ## Pre-Requirements
 - Vagrant installed on host machine from trying the ansible
