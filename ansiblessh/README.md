@@ -23,4 +23,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook -i hosts ansiblessh.yml --private-key=~/.vagrant/insecure_private_key --tags "frompubkey"
 ````
 
+## Troubleshooting
+
+- You may want to change the --private-key and url used within the ansible to your choice
 
