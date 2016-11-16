@@ -1,0 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+#!! REQUIRES !! vagrant-hostmanager
+# Installation: vagrant plugin install vagrant-hostmanager
+# Virtualbox Guestbox Addition Issues/FIX: vagrant plugin install vagrant-vbguest
+
+# Vagrantfile API/syntax version
+VAGRANTFILE_API_VERSION = '2'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.box = 'ubuntu/trusty64'
+  config.ssh.private_key_path = "~/.vagrant.d/insecure_private_key"
+  config.ssh.forward_agent = true
+
+  config.vm.define "ansiblessh" do |node|
+    node.vm.hostname = "ansiblessh"
+    node.vm.network :private_network, ip: '10.11.0.99', netmask: '255.255.255.0'
+    node.vm.provision :hostmanager
+    node.vm.provision "shell", inline: <<-SHELL
+     apt-get update
+     apt-get install -y python-dev python-pip
+     pip install paramiko markupsafe
+     pip install ansible --upgrade
+     echo \"export ANSIBLE_HOST_KEY_CHECKING=False\" >> /home/vagrant/.bashrc
+    SHELL
+  end
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ['modifyvm', :id, '--cpus', '1']
+    vb.customize ['modifyvm', :id, '--memory', '1024']
+    vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    vb.customize ['modifyvm', :id, '--name', 'ansiblessh']
+  end
+end

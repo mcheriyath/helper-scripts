@@ -1,13 +1,24 @@
 ---
-- name: Parse Json
-  hosts: localhost
+- name: Add SSH key on remote host
+  hosts: targethosts
+  remote_user: vagrant
+  sudo: true
 
   tasks:
   - name: Fetch URL
     uri: url="https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/sample.json" return_content=yes
     register: json_response
-
+    tags:
+       - fromjson
   - action: fail
     when: "'key' not in json_response.content"
+    tags:
+       - fromjson
 
   - shell: echo "{{ (json_response.content|from_json)['ssh']['key'] }}" >> ~/.ssh/authorized_keys
+    tags:
+       - fromjson
+
+  - authorized_key: user=vagrant key=https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/pub.key
+    tags:
+       - frompubkey
