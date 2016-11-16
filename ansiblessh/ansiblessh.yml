@@ -1,5 +1,5 @@
 ---
-- name: Add SSH key on remote host
+- name: Deploying SSH key on Remote Host
   hosts: targethosts
   remote_user: vagrant
   sudo: true
