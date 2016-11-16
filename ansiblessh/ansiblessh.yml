@@ -10,12 +10,18 @@
     register: json_response
     tags:
        - fromjson
+
   - action: fail
     when: "'key' not in json_response.content"
     tags:
        - fromjson
 
-  - shell: echo "{{ (json_response.content|from_json)['ssh']['key'] }}" >> ~/.ssh/authorized_keys
+  - debug: msg="Success - Key Found as =>{{  (json_response.content|from_json)['ssh']['key'] }}<="  
+    when:  (json_response.content|from_json)['ssh']['key']  is defined
+    tags:
+       - fromjson
+
+  - shell: echo "{{ (json_response.content|from_json)['ssh']['key'] }}" >> /home/vagrant/.ssh/authorized_keys
     tags:
        - fromjson
 
