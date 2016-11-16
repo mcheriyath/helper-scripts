@@ -6,7 +6,7 @@
 
   tasks:
   - name: Fetch URL
-    uri: url="https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/sample.json" return_content=yes
+    uri: url="https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/ansiblessh/sample.json" return_content=yes
     register: json_response
     tags:
        - fromjson
@@ -19,6 +19,6 @@
     tags:
        - fromjson
 
-  - authorized_key: user=vagrant key=https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/pub.key
+  - authorized_key: user=vagrant key=https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/ansiblessh/pub.key
     tags:
        - frompubkey
