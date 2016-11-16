@@ -1,0 +1,13 @@
+---
+- name: Parse Json
+  hosts: localhost
+
+  tasks:
+  - name: Fetch URL
+    uri: url="https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/sample.json" return_content=yes
+    register: json_response
+
+  - action: fail
+    when: "'key' not in json_response.content"
+
+  - shell: echo "{{ (json_response.content|from_json)['ssh']['key'] }}" >> ~/.ssh/authorized_keys
