@@ -6,7 +6,7 @@
 		"email": "mithun@cheriyath.in"
 	},
 	"ssh": {
-		"key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCcCjDWjkFGbF1llXOe73z6s0LFvh7JN8HGperfz9iXsUTMNXYimME+WTIXcZmplK2XOb7hH78eek2UoItZmTFb3k2dar8zVqf/NWx9SNjwBOAq+gJHSCb4oVuY3tvH6rwyyMwykcmI0PvgiOw7ajVzwl8uwdSXyeqL43bRetJMAl/Vh7lBup3ONapsdAh4hcB+Azd6dWvz6zm0RMLPM6rgm07YAOg4NgVkr0pXy+4pndPfU4U6f/ZPtnI+Vva/7QYBsBAdzG97AfuSz0naGqVkhi6YurYbVP/cYjI591qEOJD56YrfLr06PsDNg4WfAmWu562mjd4XeBLEUl6i/UqF mcheriyath"
+		"keys": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCcCjDWjkFGbF1llXOe73z6s0LFvh7JN8HGperfz9iXsUTMNXYimME+WTIXcZmplK2XOb7hH78eek2UoItZmTFb3k2dar8zVqf/NWx9SNjwBOAq+gJHSCb4oVuY3tvH6rwyyMwykcmI0PvgiOw7ajVzwl8uwdSXyeqL43bRetJMAl/Vh7lBup3ONapsdAh4hcB+Azd6dWvz6zm0RMLPM6rgm07YAOg4NgVkr0pXy+4pndPfU4U6f/ZPtnI+Vva/7QYBsBAdzG97AfuSz0naGqVkhi6YurYbVP/cYjI591qEOJD56YrfLr06PsDNg4WfAmWu562mjd4XeBLEUl6i/UqF mcheriyath"
 	}
 }
 
