@@ -7,21 +7,47 @@
 vagrant up
 ````
 
-## Ansible SSH deploy - From Json file
+## WITHOUTAUTH Ansible SSH deploy - From Json file
 
 Run ansible for updating the recently launched host with the SSH keys from remote github account
 ````
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts ansiblessh.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "fromjson"
+ansible-playbook -i hosts ansiblesshwithoutauth.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "fromjson"
 ````
 
-## Ansible SSH deploy - From pub key file
+## WITHOUTAUTH Ansible SSH deploy - From pub key file
 
 Run ansible for updating the recently launched host with the SSH keys from remote github account
 ````
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts ansiblessh.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "frompubkey"
+ansible-playbook -i hosts ansiblesshwithoutauth.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "frompubkey"
 ````
+
+## WITHAUTH Ansible SSH deploy - From Json file
+
+One of the best practice is to enable authtoken in github
+https://developer.github.com/v3/auth/#basic-authentication
+
+Sample CURL:
+````
+curl -H "Authorization: token $GITHUBTOKEN" -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/mcheriyath/helper-scripts/contents/ansiblessh/sample.json
+````
+
+
+Run ansible for updating the recently launched host with the SSH keys from remote github account
+````
+export ANSIBLE_HOST_KEY_CHECKING=False
+ansible-playbook -i hosts ansiblesshwithauth.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "fromjson"
+````
+
+## WITHAUTH - Ansible SSH deploy - From pub key file
+
+Run ansible for updating the recently launched host with the SSH keys from remote github account
+````
+export ANSIBLE_HOST_KEY_CHECKING=False
+ansible-playbook -i hosts ansiblesshwithauth.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "frompubkey"
+
+
 
 ## Troubleshooting
 
