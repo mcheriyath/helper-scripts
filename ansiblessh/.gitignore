@@ -1,2 +1,2 @@
-.vagrant
-ansiblessh.retry
+*.vagrant
+*.retry
