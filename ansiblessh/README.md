@@ -37,7 +37,7 @@ curl -H "Authorization: token $GITHUBTOKEN" -H 'Accept: application/vnd.github.v
 Run ansible for updating the recently launched host with the SSH keys from remote github account
 ````
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts ansiblesshwithauth.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "fromjson"
+ansible-playbook -vvvv -i hosts ansiblesshwithauth.yml --private-key=/Users/prokarma/.vagrant.d/insecure_private_key --tags "fromjson" --extra-vars githubtoken=$GITHUBTOKEN
 ````
 
 ## WITHAUTH - Ansible SSH deploy - From pub key file
@@ -45,9 +45,8 @@ ansible-playbook -i hosts ansiblesshwithauth.yml --private-key=/home/username/.v
 Run ansible for updating the recently launched host with the SSH keys from remote github account
 ````
 export ANSIBLE_HOST_KEY_CHECKING=False
-ansible-playbook -i hosts ansiblesshwithauth.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "frompubkey"
-
-
+ansible-playbook -i hosts ansiblesshwithauth.yml --private-key=/Users/prokarma/.vagrant.d/insecure_private_key --tags "frompubkey" --extra-vars githubtoken=$GITHUBTOKEN
+````
 
 ## Troubleshooting
 
