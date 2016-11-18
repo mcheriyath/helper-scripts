@@ -36,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      apt-get update
      apt-get install docker-engine -y
      usermod -aG docker vagrant
+     pip install docker-compose --upgrade
     SHELL
   end
 
