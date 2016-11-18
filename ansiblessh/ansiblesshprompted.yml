@@ -1,0 +1,32 @@
+---
+- name: ANSIBLE - SSH Deploy
+  hosts: targethosts
+  remote_user: vagrant
+  sudo: true
+
+  vars_prompt:
+    - name: "githubuser"
+      prompt: "Enter your github username"
+      private: no
+    - name: "githubpassword"
+      prompt: "Enter your github password"
+      private: yes 
+
+  tasks:
+  - name: Install few packages
+    apt: package={{item}} state=installed
+    with_items:
+       - git
+       - jshon
+
+  - git: 
+      repo: "https://{{ githubuser | urlencode }}:{{ githubpassword | urlencode }}@github.com/mcheriyath/helper-scripts.git" 
+      version: master
+      dest: "/tmp/github"
+
+  - shell: cat /tmp/github/ansiblessh/sample.json
+    register: output
+
+  - debug: msg="{{ (output.stdout|from_json)['ssh']['key'] }}"
+  
+  - authorized_key: user=vagrant key="{{ (output.stdout|from_json)['ssh']['key'] }}" 

@@ -1,0 +1,51 @@
+---
+- name: Deploying SSH key on Remote host from github with authentication
+  hosts: targethosts
+  remote_user: vagrant
+  sudo: true
+  gather_facts: false
+
+  tasks:
+    - name: Get Json File 
+      get_url:
+        url:  https://api.github.com/repos/mcheriyath/helper-scripts/contents/ansiblessh/sample.json
+        headers: "Authorization:token {{ githubtoken }},Accept:application/vnd.github.v3.raw"
+        dest: /tmp/key.json
+      tags:
+         - fromjson
+
+    - shell: cat /tmp/key.json
+      register: output
+      tags:
+         - fromjson
+
+    - debug: msg="{{ (output.stdout|from_json)['ssh']['key'] }}"
+      tags:
+         - fromjson
+
+    - authorized_key: user=vagrant key="{{ (output.stdout|from_json)['ssh']['key'] }}"
+      tags:
+         - fromjson
+
+    - name: Get SSH Key file
+      get_url:
+        url:  https://api.github.com/repos/mcheriyath/helper-scripts/contents/ansiblessh/pub.key
+        headers: "Authorization:token {{ githubtoken }},Accept:application/vnd.github.v3.raw"
+        dest: /tmp/key.pub
+      tags:
+         - frompubkey      
+
+    - shell: cat /tmp/key.pub
+      register: ssh_key
+      tags:
+         - frompubkey      
+
+    - authorized_key: user=vagrant key="{{ ssh_key.stdout }}"
+      tags:
+         - frompubkey
+
+    - name: Remove temporary files
+      shell: rm /tmp/key.*
+      tags:
+         - frompubkey
+         - fromjson
