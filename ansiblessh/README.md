@@ -18,7 +18,7 @@ ansible-playbook -i hosts ansiblesshwithoutauth.yml --private-key=/home/username
 ## WITHOUTAUTH Ansible SSH deploy - From pub key file
 
 Run ansible for updating the recently launched host with the SSH keys from remote github account
-````
+````ruby
 export ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook -i hosts ansiblesshwithoutauth.yml --private-key=/home/username/.vagrant/insecure_private_key --tags "frompubkey"
 ````
@@ -29,13 +29,13 @@ One of the best practice is to enable authtoken in github
 https://developer.github.com/v3/auth/#basic-authentication
 
 Sample CURL:
-````
+````ruby
 curl -H "Authorization: token $GITHUBTOKEN" -H 'Accept: application/vnd.github.v3.raw' -L https://api.github.com/repos/mcheriyath/helper-scripts/contents/ansiblessh/sample.json
 ````
 
 
 Run ansible for updating the recently launched host with the SSH keys from remote github account
-````
+````ruby
 export ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook -vvvv -i hosts ansiblesshwithauth.yml --private-key=/Users/prokarma/.vagrant.d/insecure_private_key --tags "fromjson" --extra-vars githubtoken=$GITHUBTOKEN
 ````
@@ -43,7 +43,7 @@ ansible-playbook -vvvv -i hosts ansiblesshwithauth.yml --private-key=/Users/prok
 ## WITHAUTH - Ansible SSH deploy - From pub key file
 
 Run ansible for updating the recently launched host with the SSH keys from remote github account
-````
+````ruby
 export ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook -i hosts ansiblesshwithauth.yml --private-key=/Users/prokarma/.vagrant.d/insecure_private_key --tags "frompubkey" --extra-vars githubtoken=$GITHUBTOKEN
 ````
