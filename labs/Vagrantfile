@@ -19,22 +19,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     node.vm.network :private_network, ip: '10.12.12.12', netmask: '255.255.255.0'
     node.vm.provision :hostmanager
     node.vm.provision "shell", inline: <<-SHELL
+     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+     echo \"deb https://apt.dockerproject.org/repo ubuntu-trusty main\" > /etc/apt/sources.list.d/docker.list
+     apt-get purge lxc-docker
      apt-get update
-     apt-get install -y python-dev python-pip python-pycurl python-yaml python-jinja2 git
+     apt-get install -y linux-image-extra-$(uname -r) python-dev python-pip python-pycurl python-yaml python-jinja2 git docker-engine
      pip install paramiko markupsafe
      pip install ansible --upgrade
      echo \"export ANSIBLE_HOST_KEY_CHECKING=False\" >> /home/vagrant/.bashrc
      mkdir /etc/ansible
      echo \"[ssh_connection]\" > /etc/ansible/ansible.cfg
      echo \"ssh_args = -o ForwardAgent=yes\" >> /etc/ansible/ansible.cfg
-    SHELL
-    node.vm.provision "shell", inline: <<-SHELL
-     apt-get install linux-image-extra-$(uname -r)
-     apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-     echo \"deb https://apt.dockerproject.org/repo ubuntu-trusty main\" > /etc/apt/sources.list.d/docker.list
-     apt-get purge lxc-docker
-     apt-get update
-     apt-get install docker-engine -y
      usermod -aG docker vagrant
      pip install docker-compose --upgrade
      docker pull ubuntu:trusty
