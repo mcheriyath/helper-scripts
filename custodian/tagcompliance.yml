@@ -1,0 +1,11 @@
+policies:
+- name: tag-compliance
+  resource: ec2
+  description:
+    List out resource that does not meet tag compliance policies.
+  filters:
+    - State.Name: running
+    - "tag:owner": absent
+    - or:
+      - "tag:Owner": absent
+      - "tag:Cost Center": absent
