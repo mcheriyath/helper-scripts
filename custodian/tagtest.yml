@@ -1,0 +1,14 @@
+policies:
+  - name: bad-apples
+    resource: ec2
+    filters:
+     - "tag:Cost Center": absent
+    actions:
+      - type: notify
+        template: default
+        subject: Please fix your AWS Resource Tags
+        to:
+          - resource-owner
+        transport:
+          type: sqs
+          queue: https://queue.amazonaws.com/470398023813/denverdevopsmcqueue
