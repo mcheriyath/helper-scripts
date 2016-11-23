@@ -9,3 +9,24 @@ tagcomplaince.yml - List out all the instance information which does not follow 
 
 
 Better integration options with SQS and Slack with [Zapier](https://zapier.com/zapbook/amazon-sqs/slack/)
+
+Generate Random SQS message
+````ruby
+python sqs.py
+````
+
+Check whether message is available on Queue
+````ruby
+aws sqs receive-message --queue-url https://queue.amazonaws.com/470398023813/denverdevopsmcqueue --attribute-names All --message-attribute-names All --max-number-of-messages 10
+````
+
+After Verifying this we are good to run the custodian script as show below to identify the resources which are not using the recommended tags
+````ruby
+custodian run -c tagcompliance.yml -s tag -r us-west-2
+````
+
+The output will be generated in tag directory 
+
+## TODO
+- Once verified the tagcompliance need to update the SQS with the ownerContact details so that a message can be posted on slack or emailed directly to him
+
