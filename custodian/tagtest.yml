@@ -11,4 +11,4 @@ policies:
           - resource-owner
         transport:
           type: sqs
-          queue: https://queue.amazonaws.com/470398023813/denverdevopsmcqueue
+          queue: {{SQS_URL}}
