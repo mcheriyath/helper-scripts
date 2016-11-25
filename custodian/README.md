@@ -17,7 +17,7 @@ python sqs.py
 
 Check whether message is available on Queue
 ````ruby
-aws sqs receive-message --queue-url https://queue.amazonaws.com/470398023813/denverdevopsmcqueue --attribute-names All --message-attribute-names All --max-number-of-messages 10
+aws sqs receive-message --queue-url <SQS URL> --attribute-names All --message-attribute-names All --max-number-of-messages 10
 ````
 
 After Verifying this we are good to run the custodian script as show below to identify the resources which are not using the recommended tags
