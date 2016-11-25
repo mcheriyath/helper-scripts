@@ -1,8 +1,11 @@
+import os
 import boto3
 import json
 import requests
 
 client = boto3.client('sqs')
+
+webhook_url = os.environ.get('SLACK_WEBHOOK')
 
 # Get the Queue URL
 response = client.get_queue_url(
@@ -23,21 +26,15 @@ if messages.get('Messages'):
     body = m['Body']
     receipt_handle = m['ReceiptHandle']
 
-print(body)
-
-webhook_url = 'https://hooks.slack.com/services/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'
-
 payload = {
 	"text":"",
 	"username": "ghost-bot",
 	"channel": "#general"
 }
 
-payload["text"] ="Message is {body}"
+payload["text"] ="Message is %s" % (body)
 
-print (payload)
-
-exit()
+print(payload)
 
 response = requests.post(
     webhook_url, data=json.dumps(payload),
