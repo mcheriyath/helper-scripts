@@ -5,7 +5,8 @@ Full Credit goes to CapitalOne Team - [Cloud-Custodian](https://github.com/capit
 Sample Files:
 instanceage.yml - List out all instance information older than 15 days
 tagcomplaince.yml - List out all the instance information which does not follow the company policy in using resource tags while creating EC2
-
+post-sqs.py - File use to create message and post it to a given SQS queue
+fetch-sqs-post-slack.py - Fetches the message from the SQS queue one by one and post it to defined slack using webhook_url
 
 
 Better integration options with SQS and Slack with [Zapier](https://zapier.com/zapbook/amazon-sqs/slack/)
@@ -29,4 +30,5 @@ The output will be generated in tag directory
 
 ## TODO
 - Once verified the tagcompliance need to update the SQS with the ownerContact details so that a message can be posted on slack or emailed directly to him
-
+- Add a for loop in the fetch-sqs-post-slack.py to get multiple messages and post it to slack
+- Proper output if there is no messages in the queue
