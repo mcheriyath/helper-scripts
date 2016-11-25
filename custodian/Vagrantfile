@@ -76,6 +76,7 @@ Vagrant.configure("2") do |config|
     pip install markupsafe --upgrade
     pip install paramiko  --upgrade
     pip install ansible --upgrade
+    pip install boto3 --upgrade
     echo "complete -C '/usr/local/bin/aws_completer' aws" >> /home/vagrant/.bashrc
   SHELL
 end
