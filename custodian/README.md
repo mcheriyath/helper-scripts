@@ -11,7 +11,7 @@ fetch-sqs-post-slack.py - Fetches the message from the SQS queue one by one and 
 
 Better integration options with SQS and Slack with [Zapier](https://zapier.com/zapbook/amazon-sqs/slack/)
 
-Generate Random SQS message
+Post random message to SQS queue
 ````ruby
 python sqs.py
 ````
