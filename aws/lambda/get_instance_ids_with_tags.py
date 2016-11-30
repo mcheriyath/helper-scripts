@@ -16,11 +16,6 @@ def get_instances_with_cost_tags(instances):
                 ids.append(instance.id)
     return ids
 
-def get_instances_without_cost_tags(instances):
-    idwot = []
-    for intance in instances:
-        for tag in instance.tags:
-
 def f5(seq, idfun=None):
     # order preserving
     if idfun is None:
