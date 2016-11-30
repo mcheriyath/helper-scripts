@@ -9,7 +9,7 @@ webhook_url = os.environ.get('SLACK_WEBHOOK')
 
 # Get the Queue URL
 response = client.get_queue_url(
-    QueueName='samplequeue' # Or the name of your SQS queue
+    QueueName='denverdevopsmcqueue' # Or the name of your SQS queue
 )
 url = response['QueueUrl']
 

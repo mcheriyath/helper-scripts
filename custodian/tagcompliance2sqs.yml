@@ -2,7 +2,7 @@ policies:
   - name: bad-apples
     resource: ec2
     filters:
-     - "tag:Cost Center": absent
+     - "Tags:Cost Center": absent
     actions:
       - type: notify
         template: default
@@ -11,4 +11,4 @@ policies:
           - resource-owner
         transport:
           type: sqs
-          queue: {{SQS_URL}}
+          queue: {{SQS_QUEUE}}

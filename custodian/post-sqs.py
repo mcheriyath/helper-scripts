@@ -9,7 +9,7 @@ for queue in sqs.queues.all():
     print(queue.url)
 
 #Get the queue
-queue = sqs.get_queue_by_name(QueueName='samplequeue')
+queue = sqs.get_queue_by_name(QueueName='denverdevopsmcqueue')
 
 #Random ID Generator
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
