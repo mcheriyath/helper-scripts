@@ -4,16 +4,16 @@ A lambda python script to check EC2 tags and post it on a defined slack channel.
 Firstly, Thanks to [Eric Thebeault](https://github.com/thibeault/lambda-slack-birthday-bot/blob/master/run.py) for pointing me in the right direction.
 
 ## Primary file lists
-lambda_run.py : Main lambda function file.
-lambda_ec2_execution-role.txt: Sample Lambda execution policy.
-ec2lambdaslack.zip: lambda package to be uploaded for execution.
+lambda_run.py : Main lambda function file.<br>
+lambda_ec2_execution-role.txt: Sample Lambda execution policy.<br>
+ec2lambdaslack.zip: lambda package to be uploaded for execution.<br>
 
 ## Supporting file lists
-Vagrantfile: Test machine for creating python virtualenvironment.
-get_instance_ids_with_tags.py: Another lame approach.
-encrypt_with_kms.py: Sample script to encrypt and decrypt a string with boto3 and AWS KMS.
-sortUnique.py: Sample script to sort a list with unique elements.
-vagrant.bashrc(encrypted): Bashrc script for the Vagrant machine to configure environment variables.
+Vagrantfile: Test machine for creating python virtualenvironment.<br>
+get_instance_ids_with_tags.py: Another lame approach.<br>
+encrypt_with_kms.py: Sample script to encrypt and decrypt a string with boto3 and AWS KMS.<br>
+sortUnique.py: Sample script to sort a list with unique elements.<br>
+vagrant.bashrc(encrypted): Bashrc script for the Vagrant machine to configure environment variables.<br>
 
 
 
