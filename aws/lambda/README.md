@@ -68,7 +68,7 @@ slackChannel|ChannelName
 
 Save it<br>
 
-### Test your lambda function
+### Testing the lambda function
 - Login to your console and go to: Lambda -> Functions -> lambda_run
 - Click on Test
 - The function should ideally run and post messages onto slack channel if there is any instance without the given tag
