@@ -1,7 +1,6 @@
 pip-selfcheck.json
 .vagrant
 *.txt
-api.key
 bin
 include
 lib
