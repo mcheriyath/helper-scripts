@@ -8,5 +8,5 @@ def getUniqueItems(iterable):
             print(item)
     return result
 
-a = ["asd","def","ase","dfg","asd","def","dfg"]
+a = ["asd","def","ase","dgg","asd","def","dfg"]
 print getUniqueItems(a)
