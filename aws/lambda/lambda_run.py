@@ -1,7 +1,6 @@
 from __future__ import print_function
 import os, sys, time, json, boto3
-from Crypto.Cipher import AES
-from Crypto import Random
+from base64 import b64decode
 
 # PIP slack client available at https://github.com/slackapi/python-slackclient
 from slackclient import SlackClient
