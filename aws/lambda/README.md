@@ -18,7 +18,8 @@ vagrant.bashrc(encrypted): Bashrc script for the Vagrant machine to configure en
 
 
 
-To Create a [Slack bot user](https://api.slack.com/custom-integrations)
+### To Create a [Slack bot user](https://api.slack.com/custom-integrations).
+
 1. Visit https://api.slack.com/custom-integrations
 2. Click on Set up a bot user button to continue creating a bot
 3. Once created add this user to the desired channel
