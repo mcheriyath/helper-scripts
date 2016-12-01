@@ -1,5 +1,5 @@
 from __future__ import print_function
-import os, sys, time, json, boto3
+import os, sys, datetime, json, boto3
 from base64 import b64decode
 
 # PIP slack client available at https://github.com/slackapi/python-slackclient
@@ -45,7 +45,8 @@ def lambda_handler(event, context):
             username='awsmessenger'))
     else:
         print("Slack Connection failed, please check whether the given token is valid.")
-    return str(datetime.now())
+    return print("Lambda run Success on {:%Y-%m-%d %H:%M:%S}".format(datetime.datetime.now()))
+
 
 """ For Debugging purpose
 instanceidswot = get_instances_without_cost_tags(instances)
