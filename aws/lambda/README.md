@@ -52,17 +52,27 @@ Create KMS key, craete an Alias and Encrypt the Slack token
 
 Note down the CiphertextBlob(including the == in the end) as this will be passed as an Environment Variable in Lambda later.
 
-##### Create environment variables
-Two ways:
-1. Using CLI while creating lambda function as 
+##### Create Lambda environment variables
+
+######Using CLI while creating lambda function as 
 > --environment Variables={kmsEncryptedSlackToken='outputofCiphertextBlob',slackChannel='ChannelName'}
 
-2. Using AWS Console
+######Using AWS Console
 Login to your console and go to: Lambda -> Functions -> lambda_run<br>
-Under Environment variables:<br>
+Under Environment variables:
+
 Key|  Value 
 --- | ---
 kmsEncryptedSlackToken|outputofCiphertextBlob
 slackChannel|ChannelName
+
 Save it<br>
 
+### Test your lambda function
+- Login to your console and go to: Lambda -> Functions -> lambda_run
+- Click on Test
+- The function should ideally run and post messages onto slack channel if there is any instance without the given tag
+- On cloudwatch logs we get the message posted to slack channel as well as an output like
+````python
+Lambda run Success on 2016-12-01 22:17:10
+````
