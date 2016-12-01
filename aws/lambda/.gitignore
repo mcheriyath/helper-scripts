@@ -1,6 +1,9 @@
 pip-selfcheck.json
 .vagrant
-*.txt
+withCostCenter.txt
+withoutCostCenter.txt
+allinstanceids.txt
+encrypted.txt
 bin
 include
 lib
