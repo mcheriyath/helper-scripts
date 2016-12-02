@@ -27,7 +27,7 @@ Firstly, Thanks to [Eric Thebeault](https://github.com/thibeault/lambda-slack-bi
 3. Once created add this user to the desired channel(Later passed as an environmentvariable in Lambda)
 4. Save the API token somewhere securely, ideally in an encrypted KMS store
 
-##### To Create a Lambda Deployment Package
+##### To Create a Lambda Deployment Package - [Official Documentation](http://docs.aws.amazon.com/lambda/latest/dg/with-s3-example-deployment-pkg.html)
 Copy the file lambda_run.py to the vagrant box. <br>
 Create a virtualenv, activate the environ, install packages with pip<br>
 
