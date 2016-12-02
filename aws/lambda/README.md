@@ -1,4 +1,4 @@
-# AWS EC2 Lambda with Slack Integration
+# AWS EC2+Lambda Integration with Slack 
 A lambda python script to check EC2 tags and post it on a defined slack channel.
 
 Firstly, Thanks to [Eric Thebeault](https://github.com/thibeault/lambda-slack-birthday-bot/blob/master/run.py) for pointing me in the right direction.
