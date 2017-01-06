@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+  config.vm.define "welltok" do |welltok|
+    welltok.vm.hostname = 'project'
+    welltok.vm.box = "ubuntu/trusty64"
+
+    welltok.vm.network :private_network, ip: "192.168.56.201"
+
+    welltok.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 2048]
+      v.customize ["modifyvm", :id, "--name", "project"]
+    end
+    config.vm.synced_folder "/Path/Github/", "/data"
+    config.vm.provision "shell", inline: <<-SHELL
+        apt-get update
+        apt-get install -y python-dev python-pip git build-essential zip unzip openconnect -y
+        pip install pip --upgrade
+        pip install awscli --upgrade
+        pip install paramiko --upgrade
+        pip install markupsafe --upgrade
+        pip install git+git://github.com/ansible/ansible.git@stable-2.1 
+        pip install boto3 --upgrade
+        pip install boto --upgrade
+        piy install virtualenv --upgrade
+        pip install simplesecuritygroups
+        mkdir /usr/local/packer
+        wget -P /tmp/ https://releases.hashicorp.com/packer/0.12.1/packer_0.12.1_linux_amd64.zip
+        unzip /tmp/packer_0.12.1_linux_amd64.zip -d /usr/local/packer
+        mkdir /etc/ansible
+        wget -O /etc/ansible/ec2.py https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/ec2.py
+        wget -O /etc/ansible/ec2.ini https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/ec2.ini
+        chmod +x /etc/ansible/ec2.py
+        echo "complete -C '/usr/local/bin/aws_completer' aws" >> /home/vagrant/.bashrc
+        echo "export PATH=$PATH:/usr/local/packer/" >> /home/vagrant/.bashrc
+        echo "export AWS_ACCESS_KEY_ID='YOUR_AWS_API_KEY'" >> /home/vagrant/.bashrc
+        echo "export AWS_SECRET_ACCESS_KEY='YOUR_AWS_API_SECRET_KEY'" >> /home/vagrant/.bashrc
+      SHELL
+  end
+end
