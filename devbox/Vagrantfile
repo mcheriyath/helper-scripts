@@ -3,13 +3,13 @@
 
 
 Vagrant.configure("2") do |config|
-  config.vm.define "welltok" do |welltok|
-    welltok.vm.hostname = 'project'
-    welltok.vm.box = "ubuntu/trusty64"
+  config.vm.define "projectK" do |projectK|
+    projectK.vm.hostname = 'project'
+    projectK.vm.box = "ubuntu/trusty64"
 
-    welltok.vm.network :private_network, ip: "192.168.56.201"
+    projectK.vm.network :private_network, ip: "192.168.56.201"
 
-    welltok.vm.provider :virtualbox do |v|
+    projectK.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
       v.customize ["modifyvm", :id, "--memory", 2048]
       v.customize ["modifyvm", :id, "--name", "project"]
