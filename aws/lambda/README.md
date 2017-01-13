@@ -72,16 +72,16 @@ Save it<br>
 ### Testing the lambda function
 
 ###### Using CLI for invoking lambda function
-````ruby
+```bash
 aws lambda invoke --invocation-type RequestResponse --function-name lambda_run --region us-west-2 --log-type Tail --payload '{"kmsEncryptedSlackToken":"outputofCiphertextBlob","slackChannel":"ChannelName"}' outputfile.txt
-````
+```
 On sucess Message gets posted onto slack channel and the command line returns a below output
-````ruby
+```bash
 {
     "LogResult": "U1RBUlQgUmVxdWVzdElkOiBiNmFhOTUxNy1iOGI2LTExZTYtOTdhZi1lMTgwN2NiMzIzM2YgVmVyc2lvbjogJExBVEVTVAp7dSdtZXNzYWdlJzoge3UndXNlcm5hbWUnOiB1J2F3c21lc3NlbmdlcicsIHUndGV4dCc6IHUiSW5zdGFuY2VJRHMgV2l0aG91dCBDb3N0IFRhZ3M6IFsnaS04YmNlM2E1NycsICdpLTUyNzk5YThlJywgJ2ktMmNlNzJkODInLCAnaS02MjhlN2JiZScsICdpLTIyNzQ5OGZlJywgJ2ktNzdkNDM5YWInLCAnaS03MGQ0MzlhYycsICdpLWNmYjBhZWQ3JywgJ2ktMTBiMGFlMDgnLCAnaS0xN2IwYWUwZicsICdpLTk2YTk3NDM4JywgJ2ktNzU1MDQ0NmQnLCAnaS0wMDUxNDUxOCcsICdpLTFjYzQyOWMwJ10iLCB1J3RzJzogdScxNDgwNzAwNTYwLjAwMDAwMicsIHUnc3VidHlwZSc6IHUnYm90X21lc3NhZ2UnLCB1J3R5cGUnOiB1J21lc3NhZ2UnLCB1J2JvdF9pZCc6IHUnQjM5MVpKQkVaJ30sIHUnb2snOiBUcnVlLCB1J3RzJzogdScxNDgwNzAwNTYwLjAwMDAwMicsIHUnY2hhbm5lbCc6IHUnQzM5S0VHSjZUJ30KTGFtYmRhIHJ1biBTdWNjZXNzIG9uIDIwMTYtMTItMDIgMTc6NDI6NDAKRU5EIFJlcXVlc3RJZDogYjZhYTk1MTctYjhiNi0xMWU2LTk3YWYtZTE4MDdjYjMyMzNmClJFUE9SVCBSZXF1ZXN0SWQ6IGI2YWE5NTE3LWI4YjYtMTFlNi05N2FmLWUxODA3Y2IzMjMzZglEdXJhdGlvbjogMjMwOC40OCBtcwlCaWxsZWQgRHVyYXRpb246IDI0MDAgbXMgCU1lbW9yeSBTaXplOiAxMjggTUIJTWF4IE1lbW9yeSBVc2VkOiA0OSBNQgkK",
     "StatusCode": 200
 }
-````
+```
 The output is saved to outputfile.txt
 
 ###### Using AWS Console for invoking lambda function
@@ -89,9 +89,9 @@ The output is saved to outputfile.txt
 - Click on Test
 - The function should ideally run and post messages onto slack channel if there is any instance without the given tag
 - On cloudwatch logs we get the message posted to slack channel as well as an output like
-````python
+```bash
 Lambda run Success on 2016-12-01 22:17:10
-````
+```
 
 ### TO-DO
 - null output
