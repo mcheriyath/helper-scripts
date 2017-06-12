@@ -30,33 +30,41 @@ Firstly, Thanks to [Eric Thebeault](https://github.com/thibeault/lambda-slack-bi
 ##### To Create a Lambda Deployment Package - [Official Documentation](http://docs.aws.amazon.com/lambda/latest/dg/with-s3-example-deployment-pkg.html)
 Copy the file lambda_run.py to the vagrant box. <br>
 Create a virtualenv, activate the environ, install packages with pip<br>
-
-> vagrant@lambda:~$ virtualenv ~/ec2lambdaslack_venv <br>
-> vagrant@lambda:~$ source ~/ec2lambdaslack_venv/bin/activate<br>
-> (ec2lambdaslack_venv) vagrant@lambda:~$ pip install slackclient boto3 crypto <br>
-
+```bash
+vagrant@lambda:~$ virtualenv ~/ec2lambdaslack_venv <br>
+vagrant@lambda:~$ source ~/ec2lambdaslack_venv/bin/activate<br>
+(ec2lambdaslack_venv) vagrant@lambda:~$ pip install slackclient boto3 crypto <br>
+```
 
 Create the lambda bundle/package with the required site-packages and lambda function code <br>
-> (ec2lambdaslack_venv) vagrant@lambda:~$ cd ~/ec2lambdaslack_venv/lib/python2.7/site-packages/ <br>
-> (ec2lambdaslack_venv) vagrant@lambda:~$ zip -r9 /vagrant/ec2lambdaslack.zip websocket boto3 botocore slackclient requests <br>
-> (ec2lambdaslack_venv) vagrant@lambda:~$ zip -r9 /vagrant/ec2lambdaslack.zip lambda_run.py <br>
+```bash
+(ec2lambdaslack_venv) vagrant@lambda:~$ cd ~/ec2lambdaslack_venv/lib/python2.7/site-packages/ <br>
+(ec2lambdaslack_venv) vagrant@lambda:~$ zip -r9 /vagrant/ec2lambdaslack.zip websocket boto3 botocore slackclient requests <br>
+(ec2lambdaslack_venv) vagrant@lambda:~$ zip -r9 /vagrant/ec2lambdaslack.zip lambda_run.py <br>
+```
 
 In the official [deployment-pkg](http://docs.aws.amazon.com/lambda/latest/dg/with-s3-example-deployment-pkg.html) it says we need to compress all the site packages, but that is not required.<br>
 
 Create your lambda function
-> aws lambda create-function --region us-west-2 --function-name lambda_run --zip-file fileb:///vagrant/ec2lambdaslack.zip --role arn:aws:iam::awsaccountnumber:role/lambda-execution-role --handler lambda_run.lambda_handler --runtime python2.7 --timeout 4 --memory-size 128
+```bash
+aws lambda create-function --region us-west-2 --function-name lambda_run --zip-file fileb:///vagrant/ec2lambdaslack.zip --role arn:aws:iam::awsaccountnumber:role/lambda-execution-role --handler lambda_run.lambda_handler --runtime python2.7 --timeout 4 --memory-size 128
+```
 
 Create KMS key, craete an Alias and Encrypt the Slack token
-> aws kms create-key --region us-west-2 --description 'Token  to Send message to Slack based on Ec2 tag complaince' --policy file://lambda_ec2_execution-role.json <br>
-> aws kms create-alias --region us-west-2 --alias-name alias/awstoslacktoken --target-key-id ARNFromTheAboveCommand <br>
-> aws kms encrypt --key-id ARNFromTheAboveCommand --region us-west-2 --plaintext "SlackTokenCreatedEarlier" <br>
+```bash
+aws kms create-key --region us-west-2 --description 'Token  to Send message to Slack based on Ec2 tag complaince' --policy file://lambda_ec2_execution-role.json <br>
+aws kms create-alias --region us-west-2 --alias-name alias/awstoslacktoken --target-key-id ARNFromTheAboveCommand <br>
+aws kms encrypt --key-id ARNFromTheAboveCommand --region us-west-2 --plaintext "SlackTokenCreatedEarlier" <br>
+```
 
 Note down the CiphertextBlob(including the == in the end) as this will be passed as an Environment Variable in Lambda later.
 
 ##### Create Lambda environment variables
 
-######Using CLI while creating lambda function as 
-> --environment Variables={kmsEncryptedSlackToken='outputofCiphertextBlob',slackChannel='ChannelName'}
+######Using CLI while creating lambda function as <br>
+```bash
+--environment Variables={kmsEncryptedSlackToken='outputofCiphertextBlob',slackChannel='ChannelName'}
+```
 
 ######Using AWS Console
 Login to your console and go to: Lambda -> Functions -> lambda_run<br>
