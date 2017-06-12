@@ -10,6 +10,15 @@
         "ec2:Describe*",
         "cloudwatch:*",
         "sns:*",
+        "lambda:ListVersionsByFunction",
+        "lambda:ListAliases",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:ListEventSourceMapping",
+        "lambda:GetPolicy",
+        "lambda:ListFunctions",
+        "lambda:InvokeFunction",
+        "lambda:CreateFunction",
         "kms:Decrypt"
       ],
       "Resource": "*"
