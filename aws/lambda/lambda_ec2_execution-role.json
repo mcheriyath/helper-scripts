@@ -4,6 +4,25 @@
     {
       "Effect": "Allow",
       "Action": [
+        "iam:GetRole",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::470398023813:role/mcheriyathLambdaExecution"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
@@ -14,11 +33,13 @@
         "lambda:ListAliases",
         "lambda:GetFunction",
         "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
         "lambda:ListEventSourceMapping",
         "lambda:GetPolicy",
         "lambda:ListFunctions",
         "lambda:InvokeFunction",
         "lambda:CreateFunction",
+        "lambda:DeleteFunction",
         "kms:Decrypt"
       ],
       "Resource": "*"
