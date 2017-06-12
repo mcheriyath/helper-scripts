@@ -9,6 +9,7 @@
         "logs:PutLogEvents",
         "ec2:Describe*",
         "cloudwatch:*",
+        "sns:*",
         "kms:Decrypt"
       ],
       "Resource": "*"
