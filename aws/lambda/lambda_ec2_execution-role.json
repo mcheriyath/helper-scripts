@@ -4,25 +4,6 @@
     {
       "Effect": "Allow",
       "Action": [
-        "iam:GetRole",
-        "iam:PutRolePolicy"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:PassRole"
-      ],
-      "Resource": [
-        "arn:aws:iam::470398023813:role/mcheriyathLambdaExecution"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
