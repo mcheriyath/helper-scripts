@@ -8,7 +8,7 @@ Full credit goes to CapitalOne Team - [Cloud-Custodian](https://github.com/capit
 * [Setup Environement](#setup-environment)
 * [Sample Policy](#sample-policy)
 * [Troubleshooting](#troubleshooting)
-* [Advanced Usage](#advaned-usage)
+* [Advanced Usage](#advanced-usage)
 * [References](#references)
 * [ToDo](#todo)
 
