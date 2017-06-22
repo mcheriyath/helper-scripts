@@ -1,7 +1,20 @@
-## Sample Rules Engine for AWS management
-This is a really good tool to ensure AWS resources are properly tagged and maintained by different IAM users in a company.
+Rules Engine for AWS management
+===============================
+A great tool to ensure AWS resources are properly tagged and maintained by different IAM users in a company.
 Full Credit goes to CapitalOne Team - [Cloud-Custodian](https://github.com/capitalone/cloud-custodian)
 
+## Contents
+* [Setup Environement](#setup-environment)
+* [Create IAM Roles](#create-iam-roles)
+* [Sample Policy](#sample-policy)
+* [Troubleshooting](#troubleshooting)
+* [Advanced usage of custodian with notification](#advaned-usage-of-custodian-with-notification)
+* [References](#references)
+* [ToDo](#todo)
+## 
+
+
+## Advanced usage of custodian with notification
 Sample Files:
 instanceage.yml - List out all instance information older than 15 days
 tagcomplaince.yml - List out all the instance information which does not follow the company policy in using resource tags while creating EC2
