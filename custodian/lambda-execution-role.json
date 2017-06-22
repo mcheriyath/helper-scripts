@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "config:PutEvaluations",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutMetricData",
+        "logs:PutLogEvents",
+        "ec2:DescribeInstances",
+        "ec2:DescribeRegions",
+        "ec2:DescribeTags",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeSnapshots",
+        "ec2:DescribeImages",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeHosts",
+        "ec2:DescribeKeyPairs",
+        "ec2:CreateImage",
+        "ec2:CreateTags",
+        "ec2:DeregisterImage",
+        "ec2:StartInstances",
+        "ec2:StopInstances",
+        "lambda:ListVersionsByFunction",
+        "lambda:ListAliases",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
+        "lambda:ListEventSourceMapping",
+        "lambda:GetPolicy",
+        "lambda:ListFunctions",
+        "lambda:InvokeFunction",
+        "lambda:CreateFunction",
+        "lambda:DeleteFunction",
+        "kms:Decrypt",
+        "iam:CreateRole",
+        "iam:CreatePolicy",
+        "iam:AttachRolePolicy",
+        "iam:GetRole",
+        "iam:PassRole",
+        "cloudwatch:PutMetricData"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
