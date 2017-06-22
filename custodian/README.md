@@ -4,7 +4,7 @@ A great tool to ensure AWS resources are properly tagged and maintained by diffe
 Full credit goes to CapitalOne Team - [Cloud-Custodian](https://github.com/capitalone/cloud-custodian)
 
 ## Contents
-* [Create IAM Roles and Permissions](#create-iam-roles)
+* [Create IAM Roles and Permissions](#create-iam-roles-and-permissions)
 * [Setup Environement](#setup-environment)
 * [Sample Policy](#sample-policy)
 * [Troubleshooting](#troubleshooting)
