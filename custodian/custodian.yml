@@ -1,0 +1,10 @@
+policies:
+  - name: ec2-tag-compliance
+    mode:
+        type: config-rule
+        role: arn:aws:iam::123456789123:role/mcheriyath-lambda-execution-role
+    resource: ec2
+    filters:
+      - "tag:Custodian": present
+    actions:
+      - stop
