@@ -1,0 +1,28 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": {"AWS":"arn:aws:iam::470398023813:user/mcheriyath@prokarma.com"},
+    "Action": "sts:AssumeRole"
+    },
+    {
+     "Effect": "Allow",
+     "Principal": {"Service": "lambda.amazonaws.com"},
+     "Action": "sts:AssumeRole"
+    },
+    {
+     "Effect": "Allow",
+     "Principal": {"Service": "ec2.amazonaws.com"},
+     "Action": "sts:AssumeRole"
+    },
+    {
+     "Effect": "Allow",
+     "Principal": {"Service": "config.amazonaws.com"},
+     "Action": "sts:AssumeRole"
+    },
+    {
+     "Effect": "Allow",
+     "Principal": {"Service": "logs.amazonaws.com"},
+     "Action": "sts:AssumeRole"
+    }]
+}
