@@ -4,14 +4,49 @@ A great tool to ensure AWS resources are properly tagged and maintained by diffe
 Full Credit goes to CapitalOne Team - [Cloud-Custodian](https://github.com/capitalone/cloud-custodian)
 
 ## Contents
-* [Setup Environement](#setup-environment)
 * [Create IAM Roles](#create-iam-roles)
+* [Setup Environement](#setup-environment)
 * [Sample Policy](#sample-policy)
 * [Troubleshooting](#troubleshooting)
 * [Advanced usage of custodian with notification](#advaned-usage-of-custodian-with-notification)
 * [References](#references)
 * [ToDo](#todo)
-## 
+
+## Create IAM Roles
+
+
+
+## Setup Environment
+
+#### Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) and launch vm using [Vagrant](https://www.vagrantup.com/downloads.html) <br>
+Sample [Vagrantfile](https://raw.githubusercontent.com/mcheriyath/helper-scripts/master/custodian/Vagrantfile) available in this repo folder
+```
+$ cd custodian
+$ vagrant up
+$ vagrant ssh
+```
+
+#### Install Cloud Custodian
+```
+$ virtualenv --python=python2 custodian
+$ source custodian/bin/activate
+(custodian) $ pip install c7n
+```
+
+## Sample Policy
+Create a file named custodian.yml with this content:
+```
+policies:
+  - name: ec2-tag-compliance
+    mode:
+        type: config-rule
+        role: <put your lambda execution role arn without quotes>
+    resource: ec2
+    filters:
+      - "tag:Custodian": present
+    actions:
+      - stop
+```
 
 
 ## Advanced usage of custodian with notification
