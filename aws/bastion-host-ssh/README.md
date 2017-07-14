@@ -12,10 +12,10 @@ Setting up bastion host on AWS-VPC public subnet to reach to all instances in a 
 
 
 ```bash
-  Host 10.220.*.*
-    User ubuntu
-    IdentityFile ~/.ssh/aws_keys/ec2deploykeasprod.key
-    StrictHostKeyChecking no
-    ForwardAgent yes
-    ProxyCommand ssh -W %h:%p <your-user-name>@<bastion-prod-ip> -i ~/.ssh/ssh_keys/<personal-privatekey-filename>
+  Host 192.168.*.*    
+  User ubuntu    
+  IdentityFile ~/bastion.pem 
+  StrictHostKeyChecking no    
+  ForwardAgent yes    
+  ProxyCommand ssh -W %h:%p joe@50.23.28.92 -i ~/.ssh/joe.key
 ```
