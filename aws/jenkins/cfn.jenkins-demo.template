@@ -491,9 +491,17 @@
               "curl -O -L https://updates.jenkins-ci.org/latest/git.hpi\n",
               "curl -O -L https://updates.jenkins-ci.org/latest/dockerhub.hpi\n",
               "chown jenkins:jenkins *.hpi\n",
+              
+              "# Jenkins require Java 1.8\n",
+              "yum remove -y java-1.7.0-openjdk.x86_64\n",
+              "yum install -y java-1.8.0-openjdk.x86_64\n",
+
+              "# Fix Java path\n",
+              "/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/java\n",
+              "/usr/sbin/alternatives --set javac /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/javac\n",
 
               "# Restarting Jenkins\n",
-              "service jenkins restart\n",
+              "service jenkins start\n",
 
               "/opt/aws/bin/cfn-signal -e $? ",
               " --stack ", {
