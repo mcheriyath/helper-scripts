@@ -5,9 +5,9 @@
 
   "Parameters": {
     "InstanceType": {
-      "Description": "WebServer EC2 instance type",
+      "Description": "EC2 Jenkins with WebServer instance type",
       "Type": "String",
-      "Default": "t2.medium",
+      "Default": "t2.small",
       "AllowedValues": ["t1.micro", "t2.micro", "t2.small", "t2.medium", "m3.medium", "m3.large", "m3.xlarge", "m3.2xlarge", "c3.large", "c3.xlarge", "c3.2xlarge", "c3.4xlarge", "c3.8xlarge", "c4.large", "c4.xlarge", "c4.2xlarge", "c4.4xlarge", "c4.8xlarge", "r3.large", "r3.xlarge", "r3.2xlarge", "r3.4xlarge", "r3.8xlarge", "i2.xlarge", "i2.2xlarge", "i2.4xlarge", "i2.8xlarge", "hi1.4xlarge", "hs1.8xlarge", "cr1.8xlarge", "cc2.8xlarge"],
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
@@ -462,10 +462,16 @@
                 "Ref": "AWS::Region"
               }, "\n",
 
+              "# Updating to Java 8\n",
+              "yum install -y java-1.8.0-openjdk.x86_64 || true \n",
+              "/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/java || true\n",
+              "/usr/sbin/alternatives --set javac /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/javac || true \n",
+              "yum install -y python python-pip\n",
+
               "# Install Jenkins\n",
               "wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo\n",
               "rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key\n",
-              "yum install -y jenkins\n",
+              "yum install -y jenkins java-1.8.0-openjdk.x86_64\n",
 
               "# Add Jenkins user to Docker group\n",
               "usermod -a -G docker jenkins\n",
@@ -491,17 +497,10 @@
               "curl -O -L https://updates.jenkins-ci.org/latest/git.hpi\n",
               "curl -O -L https://updates.jenkins-ci.org/latest/dockerhub.hpi\n",
               "chown jenkins:jenkins *.hpi\n",
-              
-              "# Jenkins require Java 1.8\n",
-              "yum remove -y java-1.7.0-openjdk.x86_64\n",
-              "yum install -y java-1.8.0-openjdk.x86_64\n",
 
-              "# Fix Java path\n",
-              "/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/java\n",
-              "/usr/sbin/alternatives --set javac /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/javac\n",
 
               "# Restarting Jenkins\n",
-              "service jenkins start\n",
+              "service jenkins restart\n",
 
               "/opt/aws/bin/cfn-signal -e $? ",
               " --stack ", {
