@@ -1,0 +1,63 @@
+{
+  "variables": {
+    "aws_key": "{{ env `AWS_ACCESS_KEY` }}",
+    "aws_secret": "{{ env `AWS_SECRET_KEY` }}",
+    "APP_NAME": "ubuntu--base14",
+    "APP_VERSION": "latest"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{ user `aws_key` }}",
+      "secret_key": "{{ user `aws_secret` }}",
+      "region": "us-east-1",
+      "source_ami": "ami-1081b807",
+      "ssh_username": "ubuntu",
+      "vpc_id": "vpc-12345566",
+      "subnet_id": "subnet-1231243",
+      "instance_type": "t2.micro",
+      "ami_name": "ubuntu--base14 {{timestamp}}",
+      "ami_regions": [
+        "us-east-1"
+      ],
+      "encrypt_boot": "true",
+      "ami_block_device_mappings": [
+        {
+          "device_name": "/dev/sda1",
+          "delete_on_termination": "true",
+          "volume_type": "gp2",
+          "volume_size": "8",
+          "encrypted": "true"
+        }
+      ],
+      "run_volume_tags": {
+          "Name": "PackerBuild AMI ",
+          "Owner": "mcheriyath"
+      },
+      "run_tags": {
+          "Name": "PackerBuild AMI ",
+          "Owner": "mcheriyath"
+      },
+      "tags": {
+          "Name": " Base AMI - Ubuntu Server 14.04 LTS",
+          "Owner": "mcheriyath",
+          "Id": "base-image"
+      },
+      "snapshot_tags": {
+        "Name": " Base AMI Snapshot - Ubuntu",
+        "Owner": "mcheriyath"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo apt-get update -y",
+        "sudo apt-get install git screen tmux emacs23-nox ntp openssl build-essential libssl-dev nagios-plugins nagios-plugins-extra python-pip curl logrotate -y"
+      ]
+    }
+  ]
+}
+
