@@ -1,0 +1,39 @@
+---
+- name: run apt-get update
+  apt: update_cache=yes
+
+- name: Install basic packages required for the server
+  action: apt pkg={{ item }} state=installed
+  tags: common-utils
+  with_items:
+    - htop
+    - vim
+    - python-pip
+    - curl
+    - git
+    - unzip
+    - python-software-properties
+    - mdadm
+
+# Install Oracle Java 7
+
+# Installing via http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
+- name: Adding Java repository
+  apt_repository: repo='ppa:webupd8team/java' update_cache=yes state=present
+  tags: oracle-java-7 
+
+- name: Auto accepting Java license
+  shell: echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+  tags: oracle-java-7
+  
+- name: Installing Oracle Java 7 and support libs
+  apt: pkg={{ item }} state=latest install_recommends=yes
+  tags: oracle-java-7
+  with_items:
+    - python-software-properties
+    - oracle-java7-installer
+    - oracle-java7-set-default
+    - libjna-java
+
+- name: Setting JAVA_HOME Environment Variables
+  action: lineinfile dest=/etc/bash.bashrc line='export JAVA_HOME=/usr/lib/jvm/java-7-oracle'
