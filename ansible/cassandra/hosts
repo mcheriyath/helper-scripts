@@ -1,0 +1,7 @@
+[cassandraservers]
+cassandra1.prod.com
+cassandra2.prod.com
+
+[cassandraservers_seeds]
+cassandra1.prod.com
+

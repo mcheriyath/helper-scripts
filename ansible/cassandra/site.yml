@@ -1,0 +1,16 @@
+# This playbook deploys the whole application stack in this site.
+
+- name: Installing common packages and Java on all node
+  hosts: all
+  remote_user: ubuntu
+  sudo: yes
+
+  roles:
+    - common
+
+- name: Raid setup and Cassandra installation
+  hosts: cassandraservers
+  remote_user: ubuntu
+  sudo: yes
+  tags:
+     - setupcassandracluster

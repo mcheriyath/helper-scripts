@@ -1,0 +1,105 @@
+---
+# Install Datastax Cassandra 2.0
+- name: Adding the DataStax Community repository
+  apt_repository: repo='deb http://debian.datastax.com/community stable main'
+
+- name: Adding the DataStax repository key to the aptitude trusted keys.
+  shell: curl -L http://debian.datastax.com/debian/repo_key | sudo apt-key add -
+
+- name: Updating APT package cache
+  apt: update_cache=yes
+
+- name: Setting up timezone to EST
+  shell: ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+
+# Starting Cassandra as a service fails, see below (Disabling ulimit...)
+- name: Installing Datastax Cassandra 2.0
+  action: apt pkg={{ item }} state=installed
+  with_items:
+    - dsc20=2.0.9-1
+    - cassandra=2.0.9 
+
+# Adds limit to sysctl.conf
+- name: Setting max map count
+  shell: echo 'vm.max_map_count = 131072' > /etc/sysctl.conf
+
+- name: Reloading sysctl
+  shell: sysctl -p
+
+- name: Disabling swap
+  shell: swapoff --all
+    
+# Replaces cassandra.conf
+- name: Setting Cassandra user resource limits
+  copy: src=cassandra.conf dest=/etc/security/limits.d/cassandra.conf
+
+# Changes heap size in cassandra-env.sh
+- name: Setting Cassandra heap size
+  copy: src=cassandra-env.sh dest=/etc/cassandra/cassandra-env.sh
+
+- name: Formatting xvdi
+  shell: (echo o; echo n; echo p; echo 1; echo ; echo; echo w) | sudo fdisk /dev/xvdi
+
+- name: Formatting xvdj
+  shell: (echo o; echo n; echo p; echo 1; echo ; echo; echo w) | sudo fdisk /dev/xvdj
+
+# Set the readahead to 128 (AWS)
+- name: Setting readahead to 128
+  shell: sudo blockdev --setra 128 /dev/xvdi1 && sudo blockdev --setra 128 /dev/xvdj1
+
+# Replaces cassandra.yaml
+- name: Updating cassandra.yaml
+  template: src=cassandra.yaml dest=/etc/cassandra/cassandra.yaml
+
+# Comments out lines in the cassandra startup script that attempt to set ulimits
+# These lines prevent root from starting Cassandra as a service
+- name: Disabling ulimit setting in cassandra startup script
+  copy: src=cassandra dest=/etc/init.d/cassandra
+
+- name: Initializing Cassandra
+  shell: service cassandra start
+
+- name: Pause for 10 seconds
+  action: pause seconds=10
+
+- name: Stopping Cassandra to reboot in cluster mode
+  shell: service cassandra stop
+
+- name: Deleting files under /var/lib/cassandra/data/system
+  shell: rm -rf /var/lib/cassandra/data/system/*
+
+- name: Rename cassandra directory
+  shell: mv /var/lib/cassandra /var/lib/cassandra.backup
+
+- name: Create cassandra directory to mount raid partition
+  shell: mkdir /var/lib/cassandra
+
+- name: Create RAID array
+  shell: mdadm --create --verbose /dev/md0 --level=stripe --raid-devices=2 /dev/xvdi1 /dev/xvdj1
+
+- name: Format the raid partition
+  shell: mkfs.ext4 /dev/md0
+
+- name: Mount raid partition to cassandra directory
+  shell: mount -t ext4 /dev/md0 /var/lib/cassandra
+
+- name: Backup fstab file before edit
+  shell: cp /etc/fstab /etc/fstab.orig
+
+- name: Adding fstab entry for raid partition
+  action: lineinfile dest=/etc/fstab line='/dev/md0   /var/lib/cassandra   ext4   defaults,nobootwait,nofail   0   2'
+
+- name: Mount all the partitions
+  shell: mount -a
+
+- name: Restoring basic cassandra files from backup
+  shell: cp -R /var/lib/cassandra.backup/* /var/lib/cassandra/
+
+- name: set ownership of cassandra directory
+  shell: chown -R cassandra.cassandra /var/lib/cassandra
+
+- name: Set permission for cassandra dorectory
+  shell: chmod -R 755 /var/lib/cassandra
+
+- name: Starting Cassandra in cluster mode
+  shell: service cassandra start

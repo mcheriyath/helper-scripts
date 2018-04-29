@@ -1,0 +1,5 @@
+---
+# vars file for cassandra
+
+cluster_name: 'Cassandra_Cluster'
+cassandra_endpoint_snitch: "Ec2Snitch"
