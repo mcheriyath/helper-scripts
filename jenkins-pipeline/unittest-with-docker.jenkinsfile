@@ -1,0 +1,87 @@
+pipeline {
+    agent any
+
+    environment {
+        // Custom PATH Definitions  
+        PATH = "/usr/local/bin/apache-maven-3.5.3/bin:$PATH"
+
+        // Notification definitions
+        SLACK_CHANNEL_NAME = 'roadrunnerinc-devops' // Channel available within yourcompany.slack.com
+
+        // Variables for Jenkinsfile 
+        CODE_DIR = 'tests'
+				HOME = '.'
+    }
+
+    stages {
+        // Slack Notification for the start of the build
+        stage ('KICKOFF-NOTIFY') {
+            steps {
+                // Send build started notifications
+                slackSend (color: '#FFFF00', channel: "${SLACK_CHANNEL_NAME}", message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+        }
+
+        stage ('CLEANUP WORKSPACE') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage ('CODE CHECKOUT') {
+            steps {
+               checkout scm
+            }
+        }
+
+        stage('INSTALL NODE MODULES') {
+						agent {
+							docker {
+								image 'node:10'
+								args '-v ${WORKSPACE}:/root -u 0:0'
+								reuseNode true
+							}
+						}
+
+            steps {
+                sh 'cd ${CODE_DIR} && npm install --save-dev'
+                sh 'cd ${CODE_DIR} && npm list'
+            }
+        }
+
+        stage('RUN TEST') {
+						agent {
+							docker {
+								image 'node:10'
+								args '-v ${WORKSPACE}:/root -v /efs/jenkins/node_env:/node_env -u 0:0'
+								reuseNode true
+							}
+						}
+	
+            steps {
+                sh 'cp /node_env/.env ${WORKSPACE}/${CODE_DIR}/'
+                sh 'ls -ltr ${CODE_DIR}'
+                sh 'ls -ltr ${CODE_DIR}/test/'
+                sh 'cd ${CODE_DIR} && npm install mocha-jenkins-reporter --save-dev'
+								sh 'ls -ltr ${CODE_DIR}'
+                sh 'cd ${CODE_DIR} && make ${TESTSUITE}' // depends on the custom Makefile definitions
+            }
+        }
+    }
+    post {
+        failure {
+            // notify when Pipeline fails
+            slackSend (color: '#FF0000', channel: "${SLACK_CHANNEL_NAME}", message: "FAILED: Job ${env.JOB_NAME} TESTREPORT: ${env.BUILD_URL}testReport")
+        }
+        success {
+            // notify on Pipeline success
+            slackSend (color: '#00FF7F', channel: "${SLACK_CHANNEL_NAME}", message: "SUCCESS: Job ${env.JOB_NAME} ${env.BUILD_URL}testReport")
+        }
+        always {
+            sh 'echo $PWD'
+            sh 'ls -ltr'
+            sh 'cp ${WORKSPACE}/${CODE_DIR}/test/*test-results.xml ${WORKSPACE}'
+            junit '**/*test-results.xml'
+        }
+    }
+}
