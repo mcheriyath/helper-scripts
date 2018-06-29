@@ -1,0 +1,40 @@
+pipeline {
+  agent none
+  stages {
+    stage('Build') {
+      agent any
+      steps {
+        echo "Building"
+      }
+    }
+
+    stage('Packaging') {
+      agent any
+      steps {
+        echo "Packaging"
+      }
+    }
+
+    stage('Decide deploy to production server') {
+      agent any
+      steps {
+        slackSend (color: '#AFEEEE', channel: '@mithun.cheriyath' , message: "Confirmation Required: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.JENKINS_URL}job/${env.JOB_NAME})")
+        script {
+          env.DEPLOY_TO_PRD = input message: 'User input required',
+          submitter: 'mcheriyath,anotherjenkinsuser',
+          parameters: [choice(name: 'Deploy to production server', choices: 'no\nyes', description: 'Choose "yes" if you want to deploy the production server')]
+        }
+      }
+    }
+
+    stage('Deploy to production server') {
+      agent any
+      when {
+        environment name: 'DEPLOY_TO_PRD', value: 'yes'
+      }
+      steps {
+        echo "Deploying to Prod"
+      }
+    }
+  }
+}
