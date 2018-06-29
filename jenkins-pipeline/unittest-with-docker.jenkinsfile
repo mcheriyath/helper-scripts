@@ -10,7 +10,7 @@ pipeline {
 
         // Variables for Jenkinsfile 
         CODE_DIR = 'tests'
-				HOME = '.'
+        HOME = '.'
     }
 
     stages {
@@ -35,13 +35,13 @@ pipeline {
         }
 
         stage('INSTALL NODE MODULES') {
-						agent {
-							docker {
-								image 'node:10'
-								args '-v ${WORKSPACE}:/root -u 0:0'
-								reuseNode true
-							}
-						}
+            agent {
+                docker {
+                    image 'node:10'
+                    args '-v ${WORKSPACE}:/root -u 0:0'
+                    reuseNode true
+                }
+            }
 
             steps {
                 sh 'cd ${CODE_DIR} && npm install --save-dev'
@@ -50,20 +50,20 @@ pipeline {
         }
 
         stage('RUN TEST') {
-						agent {
-							docker {
-								image 'node:10'
-								args '-v ${WORKSPACE}:/root -v /efs/jenkins/node_env:/node_env -u 0:0'
-								reuseNode true
-							}
-						}
+            agent {
+                docker {
+                    image 'node:10'
+                    args '-v ${WORKSPACE}:/root -v /efs/jenkins/node_env:/node_env -u 0:0'
+                    reuseNode true
+                }
+            }
 	
             steps {
                 sh 'cp /node_env/.env ${WORKSPACE}/${CODE_DIR}/'
                 sh 'ls -ltr ${CODE_DIR}'
                 sh 'ls -ltr ${CODE_DIR}/test/'
                 sh 'cd ${CODE_DIR} && npm install mocha-jenkins-reporter --save-dev'
-								sh 'ls -ltr ${CODE_DIR}'
+                sh 'ls -ltr ${CODE_DIR}'
                 sh 'cd ${CODE_DIR} && make ${TESTSUITE}' // depends on the custom Makefile definitions
             }
         }
