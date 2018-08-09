@@ -1,0 +1,65 @@
+// Jenkinsfile for Downstream job named mc-test-autotrigger-downstream referred in autotrigger-service.jenkinsfile
+// Note: We need to have **This project is parameterized** with Branch as string parameter and 
+// referrenced in SCM branch to build in jenkins ui
+
+pipeline {
+  agent any
+
+  environment {
+    // Custom PATH Definitions
+    PATH = "/usr/local/bin/:$PATH"
+  }
+
+  stages {
+    stage ('CHECKOUT') {
+      steps {
+        checkout([$class: 'GitSCM',
+        branches: [[name: '${Branch}']],
+        doGenerateSubmoduleConfigurations: false,
+        extensions: [],
+        submoduleCfg: [],
+        userRemoteConfigs: [[credentialsId: 'mcheriyath-github', url: 'https://github.com/mcheriyath/helper-scripts.git']]
+        ])
+      }
+    }
+
+
+    stage('LIST DIR') {
+      agent any
+      steps {
+        sh '''echo ${Branch}'''
+        sh '''ls -la'''
+      }
+    }
+
+    stage('Docker Test') {
+      agent {
+        docker {
+          image "python:3.6-jessie"
+          args "-v /tmp:/tmp -u root"
+        }
+      }
+      steps {
+        sh 'pip install --upgrade pip'
+        sh 'pip install awscli boto3'
+        sh 'pip freeze'
+      }
+    }
+
+    stage('NPM Version Test') {
+      agent any
+      steps {
+        sh 'node --version'
+        sh 'npm --version'
+        sh 'npm install mocha-jenkins-reporter'
+      }
+    }
+
+    stage ('Terraform test') {
+      agent any
+      steps {
+        sh 'terraform --version'
+      }
+    }
+  }
+}
