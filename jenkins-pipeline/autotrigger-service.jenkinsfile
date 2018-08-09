@@ -1,0 +1,40 @@
+// Install https://wiki.jenkins.io/display/JENKINS/Generic+Webhook+Trigger+Plugin
+// Whitelist github traffic to jenkins
+// Create Webhooks on github repo -> Settings with URL: http://jenkins.local/generic-webhook-trigger/invoke 
+// With the these options: (create, delete, push, and release)
+// Jenkins Job Configure:
+// Post content parameters: Variable = reference , Expression = $.ref (Choose JSONPath)
+// Optional Filter: Expression = ^(refs/heads/develop)$ or ^(refs/heads/release/.+|refs/heads/hotfix/.+)$ , Text = $reference
+// Pipeline Section -> Pipeline script from SCM: Branches to build = ${reference}
+// Note: no need to enable **This project is parameterized**
+
+pipeline {
+  agent any
+
+  stages {
+
+    stage('Debugging Branch') {
+      steps{
+        sh 'echo $Branch'
+      }
+    }
+
+    stage ('TRIGGER DOWNSTREAM') {
+      steps {
+        build job: 'mc-test-autotrigger-downstream', parameters: [string(name: 'Branch', value: GIT_BRANCH)]
+      }
+    }
+  }
+
+  post {
+    failure {
+      slackSend (color: '#FF0000', channel: "#roadrunner-inc-devops", message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    }
+    success {
+      slackSend (color: '#00FF00', channel: "#roadrunner-inc-devops", message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    }
+    always {
+      cleanWs()
+    }
+  }
+}
