@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/NVIDIA/vid2vid.git']]])
+            }
+        }
+
+        stage('SonarQube analysis') {
+          steps {
+            script {
+              // requires SonarQube Scanner 2.8+
+              scannerHome = tool 'sonarqube3.2'
+            }
+            withSonarQubeEnv('SonarQube') {
+              sh "$scannerHome/bin/sonar-scanner \
+                          -Dsonar.projectKey=python-project \
+                          -Dsonar.sources=. \
+                          -Dsonar.host.url=http://192.168.33.56 \
+                          -Dsonar.login=d222b288ed50309ad5b5f14448219cd6dab80ee3"
+            }
+          }
+        }
+    }
+}
