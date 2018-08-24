@@ -2,86 +2,72 @@ pipeline {
     agent any
 
     environment {
-        // Custom PATH Definitions  
-        PATH = "/usr/local/bin/apache-maven-3.5.3/bin:$PATH"
+        // Custom PATH Definitions
+        PATH = "/usr/local/bin/:$PATH"
 
-        // Notification definitions
-        SLACK_CHANNEL_NAME = 'roadrunnerinc-devops' // Channel available within yourcompany.slack.com
-
-        // Variables for Jenkinsfile 
-        CODE_DIR = 'tests'
-        HOME = '.'
+        // JEST Requirements
+        BASE_URL = 'https://sample.com/'
     }
 
     stages {
         // Slack Notification for the start of the build
-        stage ('KICKOFF-NOTIFY') {
+        stage ('SLACK NOTIFY') {
             steps {
                 // Send build started notifications
-                slackSend (color: '#FFFF00', channel: "${SLACK_CHANNEL_NAME}", message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                slackSend (color: '#FFFF00', message: "STARTED: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Open>)")
             }
         }
 
-        stage ('CLEANUP WORKSPACE') {
-            steps {
-                cleanWs()
-            }
+        stage ('CHECKOUT') {
+          steps {
+            checkout([$class: 'GitSCM',
+            branches: [[name: '${Branch}']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            submoduleCfg: [],
+            userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/mcheriyath/slack-apigw-lambda-jenkins.git']]
+            ])
+          }
         }
 
-        stage ('CODE CHECKOUT') {
-            steps {
-               checkout scm
-            }
-        }
-
-        stage('INSTALL NODE MODULES') {
-            agent {
-                docker {
-                    image 'node:10'
-                    args '-v ${WORKSPACE}:/root -u 0:0'
-                    reuseNode true
-                }
-            }
-
-            steps {
-                sh 'cd ${CODE_DIR} && npm install --save-dev'
-                sh 'cd ${CODE_DIR} && npm list'
-            }
+        stage ('PREPARING ENVIRONMENT') {
+          agent any
+          steps {
+            sh 'docker build -t slack-apigw .'
+          }
         }
 
         stage('RUN TEST') {
-            agent {
-                docker {
-                    image 'node:10'
-                    args '-v ${WORKSPACE}:/root -v /efs/jenkins/node_env:/node_env -u 0:0'
-                    reuseNode true
-                }
+          agent {
+            docker {
+              image 'slack-apigw:latest'
+              args '-v ${WORKSPACE}:/usr/src/app -u 0 -w /usr/src/app'
             }
-	
-            steps {
-                sh 'cp /node_env/.env ${WORKSPACE}/${CODE_DIR}/'
-                sh 'ls -ltr ${CODE_DIR}'
-                sh 'ls -ltr ${CODE_DIR}/test/'
-                sh 'cd ${CODE_DIR} && npm install mocha-jenkins-reporter --save-dev'
-                sh 'ls -ltr ${CODE_DIR}'
-                sh 'cd ${CODE_DIR} && make ${TESTSUITE}' // depends on the custom Makefile definitions
+          }
+
+          steps {
+            sh 'npm install'
+            sh 'npm run test'
+          }
+
+          post {
+            always {
+              junit allowEmptyResults: true, testResults: 'junit.xml'
             }
+          }
         }
     }
     post {
         failure {
             // notify when Pipeline fails
-            slackSend (color: '#FF0000', channel: "${SLACK_CHANNEL_NAME}", message: "FAILED: Job ${env.JOB_NAME} TESTREPORT: ${env.BUILD_URL}testReport")
+            slackSend (color: '#FF0000', message: "FAILED: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}testReport|Open>)")
         }
         success {
             // notify on Pipeline success
-            slackSend (color: '#00FF7F', channel: "${SLACK_CHANNEL_NAME}", message: "SUCCESS: Job ${env.JOB_NAME} ${env.BUILD_URL}testReport")
+            slackSend (color: '#00FF7F', message: "SUCCESS: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}testReport|Open>)")
         }
         always {
-            sh 'echo $PWD'
-            sh 'ls -ltr'
-            sh 'cp ${WORKSPACE}/${CODE_DIR}/test/*test-results.xml ${WORKSPACE}'
-            junit '**/*test-results.xml'
+          cleanWs()
         }
     }
 }
