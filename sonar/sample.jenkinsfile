@@ -3,7 +3,12 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/NVIDIA/vid2vid.git']]])
+                checkout([$class: 'GitSCM', 
+                branches: [[name: '*/master']], 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[url: 'https://github.com/NVIDIA/vid2vid.git']]])
             }
         }
 
@@ -18,7 +23,7 @@ pipeline {
                           -Dsonar.projectKey=python-project \
                           -Dsonar.sources=. \
                           -Dsonar.host.url=http://192.168.33.56 \
-                          -Dsonar.login=d222b288ed50309ad5b5f14448219cd6dab80ee3"
+                          -Dsonar.login=4c79b8d34d2f740e256334cd488f751ed790d562"
             }
           }
         }
