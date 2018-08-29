@@ -2,7 +2,7 @@ postgresql:
   image: orchardup/postgresql:latest
   environment:
     - POSTGRESQL_USER=sonar
-    - POSTGRESQL_PASS=xaexohquaetiesoo
+    - POSTGRESQL_PASS=sonar
     - POSTGRESQL_DB=sonar
   volumes:
     - /opt/db/sonarqube/:/var/lib/postgresql
@@ -12,7 +12,7 @@ sonarqube:
   image: sonarqube
   environment:
     - SONARQUBE_JDBC_USERNAME=sonar
-    - SONARQUBE_JDBC_PASSWORD=xaexohquaetiesoo
+    - SONARQUBE_JDBC_PASSWORD=sonar
     - SONARQUBE_JDBC_URL=jdbc:postgresql://192.168.33.56/sonar
   ports:
     - "80:9000"
