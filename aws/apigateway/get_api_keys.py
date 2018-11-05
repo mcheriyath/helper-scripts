@@ -4,9 +4,6 @@ import boto3
 import os
 import argparse
 
-# Capture our current directory
-THIS_DIR = os.path.dirname(os.path.abspath(__file__))
-
 apigateway = boto3.client('apigateway', region_name='us-east-1')
 
 def get_api_keys(apiName):
