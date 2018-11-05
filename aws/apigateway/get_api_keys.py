@@ -19,14 +19,16 @@ def get_api_keys(apiName):
 	if response is not None:
 		items = response.get('items')
 
-
 		for item in items:
-			print(item.get('value'))
+			if apiName == "all":
+				print(item.get('name') + " \n " + item.get('value'))
+			else:
+				print(item.get('value'))
 
 def main():
-	parser = argparse.ArgumentParser(description='Export some swaggers and postmans.')
+	parser = argparse.ArgumentParser(description='Get API keys')
 	parser.add_argument('apiname',
-	                   help='The api name')
+	                   help='Either use all or give the specific apiname to get the key(s)')
 
 	args = parser.parse_args()
 
@@ -34,4 +36,4 @@ def main():
 
 
 if __name__ == "__main__":
-		main()
+	main()
