@@ -2,7 +2,7 @@
 This specific lambda was written to run on python3.6
 
 #### Pre-requisite
-- Access to AWS Lambda services
+- Access to AWS Lambda and redshift services
 - A redshift admin lambda role
 - Existing redshift cluster with master/admin user created
 - Existing redshift cluster with table called [sales and some values in it](https://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-create-sample-db.html)
