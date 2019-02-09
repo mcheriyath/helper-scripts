@@ -158,6 +158,6 @@ The output will be generated in tag directory
 * [Reported Issues](https://github.com/capitalone/cloud-custodian/issues/1311)
 
 ## TODO
-- Once verified the tagcompliance need to update the SQS with the ownerContact details so that a message can be posted on slack or emailed directly to him
-- Add a for loop in the fetch-sqs-post-slack.py to get multiple messages and post it to slack
+- Once verified the tagcompliance need to update the SQS with the ownerContact details so that a message can be posted on slack or emailed directly to the owner
+- Add a for loop in the fetch-sqs-post-slack.py to get multiple messages and post the messages to slack
 - Proper output if there is no messages in the queue
