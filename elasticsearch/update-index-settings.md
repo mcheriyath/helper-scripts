@@ -41,3 +41,31 @@ _Confirm_
   }
 }
 ```
+#### _Perm Fix_ <br>
+Get the current template name:
+```
+curl -X GET 'https://search-index_name.us-east-1.es.amazonaws.com/_template'
+```
+Update the limit in the template
+```
+curl -XPUT https://search-index_name.us-east-1.es.amazonaws.com/_template/kibana_index_template -H 'Content-Type: application/json' -d \
+'{
+	"template": "*",
+	"order": 0,
+	"settings": {
+		"index": {
+			"mapping": {
+				"total_fields": {
+					"limit": "10000"
+				}
+			}
+		}
+	},
+	"version": 1
+}'
+{"acknowledged":true}
+```
+_Confirm_
+```
+curl -X GET 'https://search-index_name.us-east-1.es.amazonaws.com/_template'
+```
