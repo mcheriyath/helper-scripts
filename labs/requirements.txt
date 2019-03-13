@@ -1,0 +1,33 @@
+/*
+ Write a parser program in any programming language of your choice:
+ 
+ You have a log file of unknown length to parse. The log file consists of
+ three columns separated by ",". The first column is a unique ID of an instance.
+ The second column is either "START" or "STOP", indicating action on this instance.
+ The third column is an epoch timestamp of when the action took place.
+ 
+ Write your parser program based on the following assumptions:
+ 1. For any instance, "START" has to preceed "STOP"
+ 2. For any instance, a "START" will always have a matching "STOP"
+ 3. An instance can have multiple "START" "STOP" pairs in the same log
+ 4. A particular instance's "START" "STOP" could intersect with another instance's "START" "STOP"
+ 
+ Your report should produce the following:
+ 1. sum of up time per instance ID
+ 2. total up time for all instances
+ 
+Sample log file:
+a001,START,0
+a002,START,10
+a002,STOP,20
+a003,START,30
+a001,STOP,40
+a003,STOP,50
+a002,START,60
+a002,STOP,70
+
+Sample result:
+a001,40
+a002,20
+a003,20
+total,80
