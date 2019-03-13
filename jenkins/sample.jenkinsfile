@@ -1,0 +1,94 @@
+pipeline {
+    agent any
+    environment{
+        PATH = "/usr/local/tflint/bin:/usr/local/bin/:$PATH"
+        TF_DIR = "sample"
+    }
+
+    options {
+        ansiColor('xterm')
+    }
+    stages{
+        stage ('Start') {
+            steps {
+                slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|JOB>)")
+            }
+        }
+
+        stage('Set Env parameters'){
+          steps{
+            //load env
+            script {
+              load "${TF_DIR}/vars/${env.JENKINS_ENV}.groovy"
+              //sh "printenv"
+              sh "echo loading backend config and tfvar files"
+            }
+          }
+        }
+
+        stage('TF INIT'){
+
+
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                    sh "git config --global credential.helper '!f() { sleep 1; echo \"username=${env.GIT_USER}\npassword=${env.GIT_PASS}\"; }; f'"
+                    sh "cd ${TF_DIR} && terraform init -backend-config ${env.TF_BACKEND_CONFIG} -force-copy -no-color"
+                    sh "cd ${TF_DIR} && terraform get"
+                    sh 'git config --global --remove-section credential'
+                }
+
+            }
+        }
+
+        stage('TF VALIDATE'){
+            steps{
+                sh """
+                set +x
+                
+                cd ${TF_DIR} && terraform validate -var-file=${env.TF_VARS_FILE} -check-variables=true -no-color
+                """
+            }
+        }
+
+        stage('TF PLAN'){
+            steps{
+                sh """
+                set +x
+                cd ${TF_DIR} && terraform plan -out=${env.JENKINS_ENV}.tfplan -var-file=${env.TF_VARS_FILE} -no-color
+                """
+            }
+        }
+
+        stage('TF APPLY'){
+            when {
+                      expression {
+                        return env.APPLY_DESTROY != 'destroy';
+                      }
+                 }
+            steps{
+                sh """
+                set +x
+                cd ${TF_DIR} && terraform apply ${env.JENKINS_ENV}.tfplan -no-color
+                """
+            }
+        }
+
+        stage('TF DESTROY'){
+            when { environment name: 'APPLY_DESTROY', value: 'destroy'  }
+            steps{
+                sh """cd ${TF_DIR} && terraform destroy -force -var-file=${env.TF_VARS_FILE} -no-color"""
+            }
+        }
+    }
+    post {
+        success{
+            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|JOB>)")
+        }
+        failure {
+            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|JOB>)")
+        }
+        always{
+            cleanWs()
+        }
+    }
+}
