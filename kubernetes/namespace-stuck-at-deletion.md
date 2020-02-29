@@ -25,3 +25,14 @@ kubectl get ns delete-me -o json | \
   jq '.spec.finalizers=[]' | \
   curl -X PUT http://localhost:8001/api/v1/namespaces/<namespace>/finalize -H "Content-Type: application/json" --data @-
 ```
+
+#### Additionally check to see if this is caused by a kubernetes api service
+```
+kubectl get apiservice
+```
+
+
+#### If found any error(False (MissingEndpoints)) in any one of the apiservice, delete it like:
+```
+kubectl delete apiservice v1beta1.external.metrics.k8s.io
+```
