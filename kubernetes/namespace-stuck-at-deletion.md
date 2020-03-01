@@ -36,3 +36,9 @@ kubectl get apiservice
 ```
 kubectl delete apiservice v1beta1.external.metrics.k8s.io
 ```
+
+#### Persistent Volume Finalizers
+```
+kubectl patch pvc db-pv-claim -p '{"metadata":{"finalizers":null}}'
+kubectl patch pod db-74755f6698-8td72 -p '{"metadata":{"finalizers":null}}'
+```
