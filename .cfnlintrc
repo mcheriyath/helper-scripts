@@ -1,9 +1,0 @@
-regions:
-- us-east-1
-- us-west-2
-ignore_checks:
-- E1029  # Disable embedded parameter (this is due to serverless var creations)
-- E3031  # Disable invalid characters for names (this is due to serverless var creations)
-- E3030  # Disable instance type checks (this is due to serverless var creations)
-- E3008  # Disable iam instance profile check, iam role supports this
-- E2532  # Disable state machine JSON check (this is due to seperate file lookup)
