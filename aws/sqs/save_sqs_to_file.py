@@ -12,7 +12,7 @@ import docopt
 
 
 def get_messages_from_queue(queue_url):
-"""Generates messages from an SQS queue.
+    """Generates messages from an SQS queue.
 
     Note: this continues to generate messages until the queue is empty.
     Every message on the queue will be deleted.
