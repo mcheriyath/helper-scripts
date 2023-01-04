@@ -92,7 +92,7 @@ gitflow | git
 &nbsp; | `git tag -a 1.2.0`
 &nbsp; | `git checkout develop`
 &nbsp; | `git merge --no-ff release/1.2.0`
-&nbsp; | ~~`git branch -d release/1.2.0`
+&nbsp; | ~~`git branch -d release/1.2.0`~~
 
 
 ### Push the merged feature branch
@@ -123,7 +123,7 @@ gitflow | git
 &nbsp; | `git tag -a 1.2.1`
 &nbsp; | `git checkout develop`
 &nbsp; | `git merge --no-ff hotfix/1.2.1`
-&nbsp; | ~~`git branch -d hotfix/1.2.1`
+&nbsp; | ~~`git branch -d hotfix/1.2.1`~~
 
 
 ### Push the merged hotfix branch
